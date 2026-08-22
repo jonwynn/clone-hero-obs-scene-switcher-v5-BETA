@@ -1,0 +1,17 @@
+{
+  "name": "clone-hero-obs-scene-switcher-v5-shareable",
+  "version": "2.1.0",
+  "private": true,
+  "description": "Switch OBS scenes based on Clone Hero currentsong.txt using OBS WebSocket 5.x",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "obs-websocket-js": "5.0.6"
+  }
+}

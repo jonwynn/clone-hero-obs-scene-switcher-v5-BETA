@@ -1,0 +1,13 @@
+CLONE HERO OBS SCENE SWITCHER - CHANGELOG
+=========================================
+
+Version 2.1.0 - Shareable generalized release
+---------------------------------------------
+- Removed all user-specific OBS scene names, paths, and passwords.
+- Added clear placeholders to settings.ini.
+- Added validation that identifies unedited placeholders before connecting.
+- Added friendlier errors for bad passwords, missing scenes, and missing files.
+- Added environment-variable expansion for Clone Hero folder paths.
+- Added QUICK_START.txt and settings.example.ini.
+- Improved setup_and_run.cmd checks for Node.js, npm, and writable locations.
+- Preserved OBS WebSocket 5.x support and 250 ms song-state monitoring.

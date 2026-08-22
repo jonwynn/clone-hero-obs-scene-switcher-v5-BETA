@@ -1,0 +1,12 @@
+ATTRIBUTION
+===========
+
+Concept based on the original project:
+https://github.com/jorgeramon/clone-hero-obs-scene-switcher
+
+The original project's package metadata identifies it as ISC-licensed.
+The original version targeted OBS WebSocket 4.x.
+
+This revision targets OBS WebSocket 5.x and adds configuration validation,
+initial-state switching, current scene requests, detailed diagnostics,
+whitespace-safe song detection, and generalized documentation.

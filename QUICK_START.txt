@@ -1,0 +1,38 @@
+CLONE HERO OBS SCENE SWITCHER - QUICK START
+===========================================
+
+1. Extract the entire ZIP to a normal folder. Do not run it from inside the ZIP.
+
+2. In OBS, create or identify two scenes:
+   - One scene for Clone Hero menus / not playing a song
+   - One scene for active gameplay
+
+3. In OBS, open Tools -> WebSocket Server Settings:
+   - Enable WebSocket server
+   - Port: 4455
+   - Enable Authentication
+   - Click Apply
+   - Click Show Connect Info and copy the password
+
+4. In Clone Hero, open Settings -> General and enable Export Current Song.
+   Start any song once so currentsong.txt is created.
+
+5. Find the folder that contains currentsong.txt.
+
+6. Install the current Node.js LTS Windows x64 installer from:
+   https://nodejs.org/en/download
+
+7. Double-click OPEN_SETTINGS.cmd and replace all four placeholders in settings.ini:
+   - OBS WebSocket password
+   - Menu/not-in-song OBS scene name
+   - Gameplay/in-song OBS scene name
+   - Clone Hero folder containing currentsong.txt
+
+8. Open OBS, then double-click setup_and_run.cmd.
+
+9. Test:
+   - In menus: OBS should use the menu scene.
+   - Start a song: OBS should switch to the gameplay scene.
+   - Finish or quit the song: OBS should return to the menu scene.
+
+Read README.txt for the complete installation guide and troubleshooting.
