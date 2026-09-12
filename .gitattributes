@@ -1,0 +1,7 @@
+src/** text eol=lf
+test/** text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.md text eol=lf
+eslint.config.js text eol=lf
+assets/*.svg text eol=lf
