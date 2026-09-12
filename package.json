@@ -1,17 +1,33 @@
 {
-  "name": "clone-hero-obs-scene-switcher-v5-shareable",
-  "version": "2.1.0",
-  "private": true,
-  "description": "Switch OBS scenes based on Clone Hero currentsong.txt using OBS WebSocket 5.x",
-  "main": "index.js",
-  "scripts": {
-    "start": "node index.js"
-  },
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "license": "ISC",
-  "dependencies": {
-    "obs-websocket-js": "5.0.6"
-  }
+    "name": "clone-hero-scene-switcher",
+    "version": "3.0.0",
+    "private": true,
+    "description": "Switch OBS scenes based on Clone Hero currentsong.txt using OBS WebSocket 5.x",
+    "main": "src/main.js",
+    "author": "Jon Wynn",
+    "scripts": {
+        "start": "electron .",
+        "start:legacy": "node index.js",
+        "test": "node --test test/*.test.js",
+        "test:ui": "node --test test/ui.test.cjs",
+        "check": "eslint . && prettier --check .",
+        "format": "prettier --write .",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder --win nsis portable --x64"
+    },
+    "engines": {
+        "node": ">=24.0.0"
+    },
+    "license": "ISC",
+    "dependencies": {
+        "obs-websocket-js": "5.0.6"
+    },
+    "devDependencies": {
+        "@playwright/test": "1.63.0",
+        "electron": "44.3.0",
+        "electron-builder": "26.15.3",
+        "eslint": "10.10.0",
+        "prettier": "3.9.6",
+        "ws": "8.21.3"
+    }
 }

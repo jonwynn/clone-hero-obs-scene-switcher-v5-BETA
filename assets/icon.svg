@@ -1,0 +1,27 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 256 256"
+    role="img"
+    aria-label="Clone Hero Scene Switcher"
+>
+    <rect x="8" y="8" width="240" height="240" rx="52" fill="#111827" />
+    <rect x="40" y="56" width="112" height="82" rx="16" fill="#24334b" />
+    <path
+        d="M61 98h22l11-21 17 42 11-21h10"
+        fill="none"
+        stroke="#47dec0"
+        stroke-width="10"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <rect x="104" y="118" width="112" height="82" rx="16" fill="#47dec0" />
+    <path d="m148 137 34 22-34 22z" fill="#111827" />
+    <path
+        d="M169 67h29v27m-13-13 13 13 13-13M87 190H58v-27m13 13-13-13-13 13"
+        fill="none"
+        stroke="#f5f7fb"
+        stroke-width="9"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+</svg>

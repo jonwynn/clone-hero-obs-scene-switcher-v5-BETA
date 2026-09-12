@@ -1,0 +1,39 @@
+appId: com.jonwynn.clonehero-scenes
+productName: Clone Hero Scene Switcher
+directories:
+    output: dist
+    buildResources: assets
+asar: true
+files:
+    - src/**/*
+    - assets/**/*
+    - package.json
+    - ATTRIBUTION.txt
+    - "!**/settings.ini"
+    - "!**/settings.json"
+    - "!test/**/*"
+win:
+    icon: assets/icon.ico
+    executableName: Clone Hero Scene Switcher
+    target:
+        - target: nsis
+          arch: x64
+        - target: portable
+          arch: x64
+    requestedExecutionLevel: asInvoker
+nsis:
+    artifactName: Clone-Hero-Scene-Switcher-Setup-${version}-${arch}.${ext}
+    oneClick: false
+    perMachine: false
+    allowElevation: false
+    allowToChangeInstallationDirectory: true
+    packElevateHelper: false
+    createDesktopShortcut: true
+    createStartMenuShortcut: true
+    shortcutName: Clone Hero Scene Switcher
+    deleteAppDataOnUninstall: false
+    runAfterFinish: true
+    include: build/installer.nsh
+portable:
+    artifactName: Clone-Hero-Scene-Switcher-Portable-${version}-${arch}.${ext}
+    requestExecutionLevel: user

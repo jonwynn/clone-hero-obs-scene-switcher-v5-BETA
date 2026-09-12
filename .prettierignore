@@ -1,0 +1,10 @@
+node_modules/
+dist/
+test-results/
+coverage/
+settings.ini
+package-lock.json
+index.js
+*.txt
+*.cmd
+.runtime-test/

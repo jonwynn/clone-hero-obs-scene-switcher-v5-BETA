@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            http-equiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+        />
+        <title>Clone Hero Scene Switcher</title>
+        <link rel="stylesheet" href="styles.css" />
+        <script src="renderer.js" defer></script>
+    </head>
+    <body>
+        <div class="app-shell">
+            <header class="app-header">
+                <div class="app-brand">
+                    <img
+                        class="brand-mark"
+                        src="../../assets/icon.svg"
+                        alt=""
+                    />
+                    <div>
+                        <div class="eyebrow">YOUR GAME. YOUR SCENES.</div>
+                        <h1>Clone Hero Scene Switcher</h1>
+                    </div>
+                </div>
+                <button
+                    id="toggle_running"
+                    class="button button-primary run-button"
+                    type="button"
+                    disabled
+                >
+                    Start switching
+                </button>
+            </header>
+
+            <main>
+                <section class="status-panel" aria-label="Application status">
+                    <div class="status-grid">
+                        <div class="status-item">
+                            <span class="status-label">SWITCHER</span>
+                            <span class="status-value"
+                                ><span
+                                    id="running_dot"
+                                    class="status-dot"
+                                ></span
+                                ><span id="running_status">Loading</span></span
+                            >
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">OBS STUDIO</span>
+                            <span class="status-value"
+                                ><span id="obs_dot" class="status-dot"></span
+                                ><span id="obs_status">Waiting</span></span
+                            >
+                        </div>
+                        <div class="status-item">
+                            <span class="status-label">CLONE HERO</span>
+                            <span class="status-value"
+                                ><span id="game_dot" class="status-dot"></span
+                                ><span id="game_status">Waiting</span></span
+                            >
+                        </div>
+                    </div>
+                    <p
+                        id="status_message"
+                        class="status-message"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        Loading your settings…
+                    </p>
+                    <div class="current-scene">
+                        <span>Current OBS scene</span
+                        ><strong id="current_scene">—</strong>
+                    </div>
+                </section>
+
+                <div
+                    id="feedback"
+                    class="feedback"
+                    role="status"
+                    aria-live="polite"
+                    hidden
+                ></div>
+                <div id="notice" class="notice" hidden></div>
+
+                <div class="workspace-grid">
+                    <section
+                        class="panel presets-panel"
+                        aria-labelledby="presets_title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">01 / SCENE PRESETS</span>
+                                <h2 id="presets_title">
+                                    Ready for the next song
+                                </h2>
+                            </div>
+                            <button
+                                id="new_profile"
+                                class="button button-quiet button-small"
+                                type="button"
+                                disabled
+                            >
+                                + New preset
+                            </button>
+                        </div>
+                        <p class="panel-description">
+                            Keep a scene pair for solo play, multiplayer, or any
+                            stream setup.
+                        </p>
+
+                        <label for="profile_select">Saved preset</label>
+                        <div class="input-action-row">
+                            <select
+                                id="profile_select"
+                                disabled
+                                aria-describedby="active_profile_label"
+                            ></select>
+                            <button
+                                id="activate_profile"
+                                class="button button-secondary"
+                                type="button"
+                                disabled
+                            >
+                                Activate
+                            </button>
+                        </div>
+                        <p
+                            id="active_profile_label"
+                            class="field-hint active-profile-label"
+                        >
+                            No active preset
+                        </p>
+
+                        <form id="profile_form">
+                            <div class="field">
+                                <label for="profile_name"
+                                    >Preset name
+                                    <span
+                                        id="profile_dirty"
+                                        class="unsaved-label"
+                                        hidden
+                                        >Unsaved</span
+                                    ></label
+                                >
+                                <input
+                                    id="profile_name"
+                                    name="profile_name"
+                                    type="text"
+                                    placeholder="e.g. Single player"
+                                    maxlength="100"
+                                    required
+                                    disabled
+                                    autocomplete="off"
+                                />
+                            </div>
+
+                            <div class="scene-pair">
+                                <div class="scene-field menu-scene">
+                                    <div class="scene-heading">
+                                        <span
+                                            class="scene-symbol"
+                                            aria-hidden="true"
+                                            >Ⅱ</span
+                                        ><span>Between songs</span>
+                                    </div>
+                                    <label for="scene_menu">Menu scene</label>
+                                    <input
+                                        id="scene_menu"
+                                        name="scene_menu"
+                                        type="text"
+                                        list="scene_names"
+                                        placeholder="Exact OBS scene name"
+                                        maxlength="256"
+                                        required
+                                        disabled
+                                        autocomplete="off"
+                                    />
+                                    <p class="field-hint">
+                                        Song selection and menus
+                                    </p>
+                                </div>
+                                <div class="scene-field gameplay-scene">
+                                    <div class="scene-heading">
+                                        <span
+                                            class="scene-symbol"
+                                            aria-hidden="true"
+                                            >▶</span
+                                        ><span>During a song</span>
+                                    </div>
+                                    <label for="scene_gameplay"
+                                        >Gameplay scene</label
+                                    >
+                                    <input
+                                        id="scene_gameplay"
+                                        name="scene_gameplay"
+                                        type="text"
+                                        list="scene_names"
+                                        placeholder="Exact OBS scene name"
+                                        maxlength="256"
+                                        required
+                                        disabled
+                                        autocomplete="off"
+                                    />
+                                    <p class="field-hint">
+                                        When Clone Hero reports a song
+                                    </p>
+                                </div>
+                            </div>
+                            <datalist id="scene_names"></datalist>
+                            <div class="scene-help-row">
+                                <p class="field-hint">
+                                    Use scene names exactly as they appear in
+                                    OBS.
+                                </p>
+                                <button
+                                    id="refresh_scenes"
+                                    class="button button-link"
+                                    type="button"
+                                    disabled
+                                >
+                                    Refresh scenes
+                                </button>
+                            </div>
+                            <div class="form-actions">
+                                <button
+                                    id="save_profile"
+                                    class="button button-primary"
+                                    type="submit"
+                                    disabled
+                                >
+                                    Save preset
+                                </button>
+                                <button
+                                    id="delete_profile"
+                                    class="button button-danger button-quiet"
+                                    type="button"
+                                    disabled
+                                >
+                                    Delete preset
+                                </button>
+                            </div>
+                            <p class="field-hint save-hint">
+                                Saving also makes this your active preset.
+                            </p>
+                        </form>
+                    </section>
+
+                    <section
+                        class="panel connection-panel"
+                        aria-labelledby="connection_title"
+                    >
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">02 / CONNECTION</span>
+                                <h2 id="connection_title">
+                                    Connect your setup
+                                </h2>
+                            </div>
+                        </div>
+                        <p class="panel-description">
+                            Set this up once. The switcher reconnects when OBS
+                            or your game returns.
+                        </p>
+
+                        <form id="connection_form">
+                            <div class="field">
+                                <label for="obs_address"
+                                    >OBS WebSocket address</label
+                                >
+                                <input
+                                    id="obs_address"
+                                    name="obs_address"
+                                    type="text"
+                                    placeholder="ws://127.0.0.1:4455"
+                                    required
+                                    disabled
+                                    spellcheck="false"
+                                    autocomplete="off"
+                                />
+                                <p class="field-hint">
+                                    For OBS on this PC: ws://127.0.0.1:4455
+                                </p>
+                            </div>
+                            <div class="field">
+                                <label for="obs_password"
+                                    >WebSocket password</label
+                                >
+                                <div class="password-row">
+                                    <input
+                                        id="obs_password"
+                                        name="obs_password"
+                                        type="password"
+                                        placeholder="Password from OBS"
+                                        disabled
+                                        autocomplete="off"
+                                    />
+                                    <button
+                                        id="toggle_password"
+                                        class="button button-quiet button-small"
+                                        type="button"
+                                        aria-label="Show WebSocket password"
+                                        aria-pressed="false"
+                                        disabled
+                                    >
+                                        Show
+                                    </button>
+                                </div>
+                                <p class="field-hint">
+                                    Leave blank if OBS authentication is turned
+                                    off.
+                                </p>
+                            </div>
+                            <div class="field folder-field">
+                                <label for="clone_hero_folder"
+                                    >Clone Hero data folder</label
+                                >
+                                <div class="input-action-row">
+                                    <input
+                                        id="clone_hero_folder"
+                                        name="clone_hero_folder"
+                                        type="text"
+                                        placeholder="Folder containing currentsong.txt"
+                                        required
+                                        disabled
+                                        spellcheck="false"
+                                        autocomplete="off"
+                                    />
+                                    <button
+                                        id="browse_folder"
+                                        class="button button-secondary"
+                                        type="button"
+                                        disabled
+                                    >
+                                        Browse
+                                    </button>
+                                </div>
+                                <p class="field-hint">
+                                    Choose the folder containing
+                                    <code>currentsong.txt</code>.
+                                </p>
+                            </div>
+                            <div class="form-actions connection-actions">
+                                <button
+                                    id="save_connection"
+                                    class="button button-secondary"
+                                    type="submit"
+                                    disabled
+                                >
+                                    Save connection
+                                </button>
+                                <span
+                                    id="connection_dirty"
+                                    class="unsaved-label"
+                                    hidden
+                                    >Unsaved</span
+                                >
+                            </div>
+                        </form>
+
+                        <details class="setup-help">
+                            <summary>First-time setup</summary>
+                            <ol>
+                                <li>
+                                    In OBS, open
+                                    <strong
+                                        >Tools → WebSocket Server
+                                        Settings</strong
+                                    >
+                                    and enable the server. Use
+                                    <strong>Show Connect Info</strong> for its
+                                    address and password.
+                                </li>
+                                <li>
+                                    In Clone Hero, enable
+                                    <strong>Export Current Song</strong>. Select
+                                    the folder where the game writes
+                                    <code>currentsong.txt</code>.
+                                </li>
+                                <li>
+                                    Save your connection and scene preset, then
+                                    select <strong>Start switching</strong> if
+                                    the switcher is paused.
+                                </li>
+                            </ol>
+                        </details>
+                    </section>
+                </div>
+            </main>
+
+            <footer class="app-footer">
+                <p>
+                    Minimize to keep switching. Closing this window quits the
+                    app.
+                </p>
+                <div>
+                    <span id="app_version"></span
+                    ><button
+                        id="open_logs"
+                        class="button button-link"
+                        type="button"
+                        disabled
+                    >
+                        Open logs
+                    </button>
+                </div>
+            </footer>
+        </div>
+
+        <dialog
+            id="confirmation_dialog"
+            aria-labelledby="confirmation_title"
+            aria-describedby="confirmation_message"
+        >
+            <form method="dialog">
+                <h2 id="confirmation_title">Discard unsaved changes?</h2>
+                <p id="confirmation_message"></p>
+                <div class="dialog-actions">
+                    <button
+                        id="cancel_confirmation"
+                        class="button button-secondary"
+                        type="submit"
+                        value="cancel"
+                        autofocus
+                    >
+                        Keep editing
+                    </button>
+                    <button
+                        id="accept_confirmation"
+                        class="button button-danger"
+                        type="submit"
+                        value="confirm"
+                    >
+                        Discard changes
+                    </button>
+                </div>
+            </form>
+        </dialog>
+    </body>
+</html>

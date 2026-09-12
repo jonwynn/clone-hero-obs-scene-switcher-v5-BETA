@@ -1,0 +1,61 @@
+name: Build Windows application
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+        branches: [main]
+    workflow_dispatch:
+
+permissions:
+    contents: read
+
+concurrency:
+    group: windows-${{ github.ref }}
+    cancel-in-progress: true
+
+jobs:
+    build:
+        runs-on: windows-latest
+        timeout-minutes: 30
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "24"
+                  cache: npm
+            - name: Install locked dependencies
+              run: npm ci
+            - name: Check formatting and lint
+              run: npm run check
+            - name: Test switching and settings
+              run: npm test
+            - name: Test desktop interface
+              run: npm run test:ui
+            - name: Build installer and portable executable
+              run: npm run dist -- --publish never
+              env:
+                  CSC_IDENTITY_AUTO_DISCOVERY: "false"
+            - name: Test bundled desktop application
+              run: npm run test:ui
+              env:
+                  SCENE_SWITCHER_APP_PATH: dist/win-unpacked/resources/app.asar
+            - name: Write executable checksums
+              shell: pwsh
+              run: |
+                  Get-ChildItem dist\*.exe |
+                      Get-FileHash -Algorithm SHA256 |
+                      ForEach-Object {
+                          '{0}  {1}' -f $_.Hash.ToLowerInvariant(), (Split-Path $_.Path -Leaf)
+                      } |
+                      Set-Content -LiteralPath dist\SHA256SUMS.txt
+            - name: Upload Windows downloads
+              uses: actions/upload-artifact@v4
+              with:
+                  name: clone-hero-scene-switcher-windows-x64
+                  path: |
+                      dist/Clone-Hero-Scene-Switcher-Setup-*.exe
+                      dist/Clone-Hero-Scene-Switcher-Portable-*.exe
+                      dist/SHA256SUMS.txt
+                  if-no-files-found: error
+                  retention-days: 30

@@ -1,5 +1,25 @@
-CLONE HERO OBS SCENE SWITCHER - CHANGELOG
-=========================================
+CLONE HERO SCENE SWITCHER - CHANGELOG
+====================================
+
+Version 3.0.0 - Desktop application
+----------------------------------
+- Added a Windows graphical interface for connection settings, song-export
+  location, and arbitrary menu/gameplay scene names.
+- Added saved scene presets for single-player, multiplayer, and other setups.
+- Added a standalone Windows executable, assisted current-user installer,
+  desktop and Start menu shortcuts, uninstaller, and portable executable.
+- Bundled the application runtime so normal use requires no Node.js setup
+  or terminal window.
+- Added automatic OBS reconnection and recovery from unavailable game exports.
+- Kept the application running when OBS or Clone Hero closes, with protection
+  against reusing a leftover song export after detecting game shutdown.
+- Stored settings per Windows user and encrypted the saved OBS password.
+- Added automated settings, switching, and desktop-interface tests and a
+  Windows build workflow that provides installer and portable downloads.
+- Retained the original script for compatibility in the source repository;
+  the desktop application uses its own settings and excludes legacy scripts.
+- Replaced normal batch-file setup instructions with desktop setup and an
+  actual-game verification checklist.
 
 Version 2.1.0 - Shareable generalized release
 ---------------------------------------------
